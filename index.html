@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Where your money goes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EEF2EE; --ink:#13201A; --ink-soft:#4A5D53; --line:#D2DCD4; --field:#FFFFFF;
+  --full:#2F6B55; --part:#D99A2B; --none:#B3421F; --empty:rgba(19,32,26,.18);
+  --track:rgba(19,32,26,.07);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1713; --ink:#E6EDE7; --ink-soft:#9BB0A3; --line:#26362D; --field:#18241E;
+    --full:#5FC3A0; --part:#EFB44A; --none:#E8815C; --empty:rgba(230,237,231,.22);
+    --track:rgba(230,237,231,.09);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F1713; --ink:#E6EDE7; --ink-soft:#9BB0A3; --line:#26362D; --field:#18241E;
+  --full:#5FC3A0; --part:#EFB44A; --none:#E8815C; --empty:rgba(230,237,231,.22);
+  --track:rgba(230,237,231,.09);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Bricolage Grotesque","Segoe UI",system-ui,-apple-system,sans-serif;
+  font-size:17px;line-height:1.5}
+.wrap{max-width:37rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+h1{font-size:clamp(2rem,8vw,2.8rem);font-weight:800;line-height:1.03;letter-spacing:-.025em;margin:0 0 .6rem}
+.sub{color:var(--ink-soft);margin:0 0 2rem;max-width:31rem}
+.ask{background:var(--field);border:1px solid var(--line);border-radius:14px;padding:1.15rem 1.25rem 1.3rem;margin-bottom:1.6rem}
+.hours{display:flex;gap:1.5rem;flex-wrap:wrap}
+.hbox{flex:1 1 8rem}
+label{display:block;font-size:.9rem;color:var(--ink-soft);margin-bottom:.4rem}
+input{font:inherit;font-size:1.6rem;font-weight:700;letter-spacing:-.02em;color:var(--ink);
+  background:transparent;border:0;border-bottom:2px solid var(--line);padding:0 0 .15rem;
+  width:100%;max-width:6ch;border-radius:0}
+input:focus{outline:none;border-bottom-color:var(--full)}
+input:focus-visible{outline:2px solid var(--full);outline-offset:4px}
+.gross{margin-top:1.1rem;padding-top:.9rem;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+.gross span{color:var(--ink-soft);font-size:.9rem}
+.gross b{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.quick{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem}
+.quick button{font:inherit;font-size:.85rem;font-weight:500;color:var(--ink-soft);
+  background:transparent;border:1px solid var(--line);border-radius:20px;
+  padding:.35rem .85rem;cursor:pointer}
+.quick button:hover{color:var(--ink);border-color:var(--ink-soft)}
+.quick button:focus-visible{outline:2px solid var(--full);outline-offset:2px}
+.verdict{border-left:3px solid var(--full);padding:.2rem 0 .2rem 1rem;margin-bottom:2.2rem}
+.verdict strong{display:block;font-size:1.15rem;font-weight:700;letter-spacing:-.015em;margin-bottom:.2rem}
+.verdict p{margin:0;color:var(--ink-soft);font-size:.95rem}
+.verdict.short{border-left-color:var(--none)}
+.verdict.tight{border-left-color:var(--part)}
+.row{margin-bottom:1.05rem}
+.row-top{display:flex;justify-content:space-between;align-items:baseline;gap:.8rem;margin-bottom:.35rem}
+.name{font-weight:500}
+.got{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.need{font-size:.85rem;color:var(--ink-soft);font-weight:400;margin-left:.4rem}
+.track{height:9px;background:var(--track);border-radius:5px;overflow:hidden}
+.fill{height:100%;border-radius:5px;width:0;transition:width .4s cubic-bezier(.22,.8,.3,1)}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}}
+.note{font-size:.85rem;color:var(--ink-soft);margin:.4rem 0 0}
+.dim .name,.dim .got{color:var(--ink-soft);opacity:.65}
+h2.sec{font-size:1.35rem;font-weight:800;letter-spacing:-.02em;margin:2.6rem 0 1rem;
+  padding-top:1.6rem;border-top:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:.95rem}
+th{text-align:left;font-weight:500;color:var(--ink-soft);font-size:.85rem;padding:0 .5rem .5rem 0;border-bottom:1px solid var(--line)}
+th:last-child,td:last-child{text-align:right;padding-right:0}
+td{padding:.6rem .5rem;border-bottom:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;padding-left:0}
+.rule{margin-bottom:1.15rem}
+.rule strong{display:block;font-weight:700;margin-bottom:.15rem}
+.rule p{margin:0;color:var(--ink-soft);font-size:.95rem}
+.sign{margin-top:2.6rem;padding-top:1.5rem;border-top:1px solid var(--line);color:var(--ink-soft);font-size:.95rem}
+.sign em{font-style:normal;color:var(--ink);font-weight:500}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Where your money goes</h1>
+  <p class="sub">Put in the shifts you worked. Money fills the list from the top down, and you can see exactly where it runs out.</p>
+
+  <div class="ask">
+    <div class="hours">
+      <div class="hbox">
+        <label for="day">Day hours <span style="opacity:.7">$33.85</span></label>
+        <input id="day" type="number" inputmode="decimal" min="0" step="0.25" value="12.25">
+      </div>
+      <div class="hbox">
+        <label for="eve">Evening / on-call <span style="opacity:.7">$39.27</span></label>
+        <input id="eve" type="number" inputmode="decimal" min="0" step="0.25" value="2.75">
+      </div>
+    </div>
+    <div class="gross"><span>That fortnight you earn</span><b id="gross"></b></div>
+  </div>
+
+  <div class="quick">
+    <button type="button" data-d="12.25" data-e="2.75">Last payslip</button>
+    <button type="button" data-d="14" data-e="4">Covers the loans</button>
+    <button type="button" data-d="18" data-e="6">Comfortable</button>
+    <button type="button" data-d="22" data-e="7">Standing alone</button>
+  </div>
+
+  <div class="verdict" id="verdict"><strong></strong><p></p></div>
+
+  <div id="buckets"></div>
+
+  <h2 class="sec">How many shifts you need</h2>
+  <table>
+    <thead><tr><th>Hours a fortnight</th><th>What it reaches</th></tr></thead>
+    <tbody>
+      <tr><td>13</td><td>Rent, food, Myki, subscriptions. Nothing after that.</td></tr>
+      <tr><td>17</td><td>Adds both loan repayments.</td></tr>
+      <tr><td>19</td><td>Adds the tithe.</td></tr>
+      <tr><td>25</td><td>Adds the emergency fund and about $100 of your own.</td></tr>
+      <tr><td>28</td><td>Covers the whole rent on your own, without Appa's $280.</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Roughly half those numbers per week. Twenty-eight a fortnight is fourteen hours a week &mdash; that's the one worth aiming at.</p>
+
+  <h2 class="sec">Worth knowing</h2>
+  <div class="rule">
+    <strong>Evening and on-call pay 16% more</strong>
+    <p>$39.27 against $33.85. Two evening hours are worth nearly two and a half day hours. If you get to choose, choose those. On-call especially &mdash; you're paid the higher rate for being available.</p>
+  </div>
+  <div class="rule">
+    <strong>You pay no tax under $18,200 a year</strong>
+    <p>That's about $700 a fortnight. Everything under it is yours in full, so don't ever turn down hours worrying about tax. Past that you only pay on the bit above.</p>
+  </div>
+  <div class="rule">
+    <strong>Trips and long shifts are where the ground gets made up</strong>
+    <p>One work trip is what paid the rent down. Put your hand up for those whenever they come around &mdash; they do more in one go than months of careful budgeting.</p>
+  </div>
+  <div class="rule">
+    <strong>Subscriptions are the easiest cut</strong>
+    <p>$30 a fortnight is $780 a year. At your hourly rate that's 23 hours of work. Worth checking what's actually in there.</p>
+  </div>
+  <div class="rule">
+    <strong>Rent, food, insurance</strong>
+    <p>The three where missing a payment has consequences you can't talk your way out of. If a fortnight is short, keep these, let the repayments wait, and tell me. That's information, not failure.</p>
+  </div>
+
+  <div class="sign"><p><em>Appa</em></p></div>
+
+</div>
+
+<script>
+(function(){
+  var DAY = 33.8520, EVE = 39.2683;
+  var BUCKETS = [
+    {name:'Tithe', pct:10},
+    {name:'Rent (your share)', amt:260, note:'After Appa\u2019s $280 a fortnight.'},
+    {name:'Food', amt:120, note:'Plus the supermarket card when you have one.'},
+    {name:'Myki', amt:30},
+    {name:'Subscriptions', amt:30},
+    {name:'Repayment to Appa', amt:55},
+    {name:'Repayment to Amma', amt:80},
+    {name:'Emergency fund', amt:100, note:'Build to $1,000, then it becomes the holiday fund.'},
+    {name:'Yours to spend', amt:null, note:'Whatever reaches this far is yours, no guilt.'}
+  ];
+
+  var dayI = document.getElementById('day'), eveI = document.getElementById('eve');
+  var grossEl = document.getElementById('gross');
+  var host = document.getElementById('buckets');
+  var verdict = document.getElementById('verdict');
+
+  function money(n){ return '$' + Math.round(n).toLocaleString('en-AU'); }
+  function num(el){ var v = parseFloat(el.value); return (isFinite(v) && v > 0) ? v : 0; }
+
+  host.innerHTML = BUCKETS.map(function(b,i){
+    return '<div class="row" data-i="'+i+'">'+
+      '<div class="row-top"><div class="name">'+b.name+'<span class="need"></span></div>'+
+      '<div class="got"></div></div>'+
+      '<div class="track"><div class="fill"></div></div>'+
+      (b.note?'<p class="note">'+b.note+'</p>':'')+
+    '</div>';
+  }).join('');
+  var rows = Array.prototype.slice.call(host.querySelectorAll('.row'));
+
+  function render(){
+    var pay = num(dayI)*DAY + num(eveI)*EVE;
+    grossEl.textContent = '$' + pay.toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2});
+    var pot = pay, shortfall = 0;
+
+    BUCKETS.forEach(function(b,i){
+      var row = rows[i];
+      var need = (b.amt === null) ? null : (b.pct ? pay*b.pct/100 : b.amt);
+      var got, ratio;
+      if(need === null){
+        got = Math.max(pot,0); ratio = got > 0 ? 1 : 0;
+        row.querySelector('.need').textContent = '';
+      } else {
+        got = Math.max(Math.min(pot, need), 0);
+        ratio = need > 0 ? got/need : 1;
+        if(got < need - 0.5) shortfall += (need - got);
+        row.querySelector('.need').textContent = 'needs ' + money(need);
+      }
+      pot -= got;
+      row.querySelector('.got').textContent = money(got);
+      var fill = row.querySelector('.fill');
+      fill.style.width = (ratio*100) + '%';
+      fill.style.background = ratio >= .999 ? 'var(--full)' : (ratio > 0 ? 'var(--part)' : 'var(--empty)');
+      row.className = 'row' + (ratio === 0 ? ' dim' : '');
+    });
+
+    var left = Math.max(pot,0);
+    var v = verdict.querySelector('strong'), p = verdict.querySelector('p');
+    if(shortfall > 0.5){
+      verdict.className = 'verdict short';
+      v.textContent = money(shortfall) + ' short';
+      p.textContent = 'Not enough to fill everything. Keep rent and food, let the repayments wait, and tell Appa.';
+    } else if(left < 40){
+      verdict.className = 'verdict tight';
+      v.textContent = 'Covered, ' + money(left) + ' left';
+      p.textContent = 'It works, but there is nothing spare. One more shift changes this.';
+    } else {
+      verdict.className = 'verdict';
+      v.textContent = money(left) + ' is yours';
+      p.textContent = 'Everything covered. On a fortnight like this, put a chunk straight at the loans.';
+    }
+  }
+
+  [dayI,eveI].forEach(function(el){ el.addEventListener('input', render); });
+  Array.prototype.forEach.call(document.querySelectorAll('.quick button'), function(btn){
+    btn.addEventListener('click', function(){
+      dayI.value = btn.getAttribute('data-d');
+      eveI.value = btn.getAttribute('data-e');
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>
