@@ -50,6 +50,14 @@ input:focus-visible{outline:2px solid var(--full);outline-offset:4px}
   display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
 .gross span{color:var(--ink-soft);font-size:.9rem}
 .gross b{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.money{display:flex;align-items:baseline;gap:.15rem;margin-top:.2rem}
+.money span{font-size:1.5rem;font-weight:500;color:var(--ink-soft)}
+.helpquick{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:1rem}
+.helpquick button{font:inherit;font-size:.8rem;font-weight:500;color:var(--ink-soft);
+  background:transparent;border:1px solid var(--line);border-radius:20px;
+  padding:.3rem .75rem;cursor:pointer}
+.helpquick button:hover{color:var(--ink);border-color:var(--ink-soft)}
+.helpquick button:focus-visible{outline:2px solid var(--full);outline-offset:2px}
 .quick{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem}
 .quick button{font:inherit;font-size:.85rem;font-weight:500;color:var(--ink-soft);
   background:transparent;border:1px solid var(--line);border-radius:20px;
@@ -82,6 +90,15 @@ td:first-child{font-variant-numeric:tabular-nums;padding-left:0}
 .rule{margin-bottom:1.15rem}
 .rule strong{display:block;font-weight:700;margin-bottom:.15rem}
 .rule p{margin:0;color:var(--ink-soft);font-size:.95rem}
+.act{font:inherit;font-size:.92rem;font-weight:600;color:var(--paper);
+  background:var(--ink);border:0;border-radius:24px;padding:.65rem 1.3rem;cursor:pointer;margin:0 .5rem .5rem 0}
+.act.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.act:focus-visible{outline:2px solid var(--full);outline-offset:3px}
+#msg{display:block;width:100%;margin:1.1rem 0 .8rem;min-height:10.5rem;resize:vertical;
+  font:inherit;font-size:.92rem;line-height:1.55;color:var(--ink);background:var(--field);
+  border:1px solid var(--line);border-radius:12px;padding:1rem;max-width:100%}
+#msg:focus-visible{outline:2px solid var(--full);outline-offset:2px}
+#copied{font-size:.85rem;color:var(--full);font-weight:600;margin:.2rem 0 0;min-height:1.2em}
 .sign{margin-top:2.6rem;padding-top:1.5rem;border-top:1px solid var(--line);color:var(--ink-soft);font-size:.95rem}
 .sign em{font-style:normal;color:var(--ink);font-weight:500}
 </style>
@@ -90,7 +107,7 @@ td:first-child{font-variant-numeric:tabular-nums;padding-left:0}
 <div class="wrap">
 
   <h1>Where your money goes</h1>
-  <p class="sub">Put in the shifts you worked. Money fills the list from the top down, and you can see exactly where it runs out.</p>
+  <p class="sub">Put in the shifts you&rsquo;re rostered for. Money fills the list from the top down, so you can see where it runs out before the fortnight starts &mdash; not after.</p>
 
   <div class="ask">
     <div class="hours">
@@ -108,6 +125,16 @@ td:first-child{font-variant-numeric:tabular-nums;padding-left:0}
       </div>
     </div>
     <div class="gross"><span>That fortnight you earn</span><b id="gross"></b></div>
+  </div>
+
+  <div class="ask">
+    <label for="help"><b>Appa&rsquo;s help with rent this fortnight</b>Rent is $540. Whatever goes in here comes off your share.</label>
+    <div class="money"><span>$</span><input id="help" type="number" inputmode="decimal" min="0" max="540" step="10" value="140"></div>
+    <div class="helpquick">
+      <button type="button" data-h="0">None</button>
+      <button type="button" data-h="140">Normal</button>
+      <button type="button" data-h="280">Tight fortnight</button>
+    </div>
   </div>
 
   <div class="quick">
@@ -132,10 +159,14 @@ td:first-child{font-variant-numeric:tabular-nums;padding-left:0}
     </tbody>
   </table>
   </div>
-  <p class="note">Saturdays, evenings and on-call are the ones to chase &mdash; especially on-call, where you're paid the higher rate for being available rather than working straight through. To cover everything on your own you need about $950 a fortnight: 28 weekday hours, or 24 if they're Saturdays and evenings.</p>
+  <p class="note">Saturdays, evenings and on-call are the ones to chase &mdash; especially on-call, where you're paid the higher rate for being available rather than working straight through. With Appa&rsquo;s usual $140 you need about $905 a fortnight to cover everything: 27 weekday hours, or 23 if they&rsquo;re Saturdays and evenings. With no help at all it&rsquo;s about $950.</p>
   <p class="note">Sunday pays the most on paper. It isn't where I want you &mdash; keep your Sundays for church. If a Sunday shift is genuinely the only one going, take it and we'll talk, but don't build your roster around it.</p>
 
   <h2 class="sec">Worth knowing</h2>
+  <div class="rule">
+    <strong>The rent help moves both ways</strong>
+    <p>$140 a fortnight is the normal setting. When you&rsquo;re earning well, tell me and I&rsquo;ll drop it &mdash; that money is doing someone else good. When a fortnight goes wrong, tell me and I&rsquo;ll put more in. Slide it here first so you know the number before you ask. Asking isn&rsquo;t failing; it&rsquo;s the whole arrangement working.</p>
+  </div>
   <div class="rule">
     <strong>Tax has started coming out &mdash; that's normal</strong>
     <p>Tax is worked out as if every fortnight looked like that one. A big fortnight makes it look like you earn a lot all year, so more comes out. If your year total stays low, you get the extra back when you lodge your tax return. Lodge one every year, even if you think you earned nothing &mdash; that's how you get it back.</p>
@@ -157,16 +188,23 @@ td:first-child{font-variant-numeric:tabular-nums;padding-left:0}
     <p>The three where missing a payment has consequences you can't talk your way out of. If a fortnight is short, keep these, let the repayments wait, and tell me. That's information, not failure.</p>
   </div>
 
+  <h2 class="sec">Tell Appa</h2>
+  <p class="note" style="font-size:.95rem">I can&rsquo;t see your roster, so I only know what you tell me. Put the fortnight in above, work out the number, and send it. Do it when the roster comes out, not when the money runs out.</p>
+  <button type="button" class="act" id="solve">Work out the help I need</button>
+  <button type="button" class="act ghost" id="copy">Copy message</button>
+  <p id="copied"></p>
+  <textarea id="msg" readonly></textarea>
+
   <div class="sign"><p><em>Appa</em></p></div>
 
 </div>
 
 <script>
 (function(){
-  var WD = 33.8520, SAT = 39.2683, SUN = 47.3928;
+  var WD = 33.8520, SAT = 39.2683, SUN = 47.3928, RENT = 540;
   var BUCKETS = [
     {name:'Tithe', pct:10},
-    {name:'Rent (your share)', amt:260, note:'After Appa\u2019s $280 a fortnight.'},
+    {name:'Rent (your share)', rent:true, note:'Your half of a $540 fortnight, less whatever Appa puts in.'},
     {name:'Food', amt:120, note:'Plus the supermarket card when you have one.'},
     {name:'Myki', amt:30},
     {name:'Subscriptions', amt:30},
@@ -181,6 +219,7 @@ td:first-child{font-variant-numeric:tabular-nums;padding-left:0}
   var host = document.getElementById('buckets');
   var verdict = document.getElementById('verdict');
 
+  var msgEl = null, copiedEl = null;
   function money(n){ return '$' + Math.round(n).toLocaleString('en-AU'); }
   function num(el){ var v = parseFloat(el.value); return (isFinite(v) && v > 0) ? v : 0; }
 
@@ -194,16 +233,19 @@ td:first-child{font-variant-numeric:tabular-nums;padding-left:0}
   }).join('');
   var rows = Array.prototype.slice.call(host.querySelectorAll('.row'));
 
+  var helpI = document.getElementById('help');
+
   function render(){
     var pay = num(a)*WD + num(b)*SAT + num(c)*SUN;
+    var help = Math.min(num(helpI), RENT);
     grossEl.textContent = '$' + pay.toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2});
     var pot = pay, shortfall = 0;
 
     BUCKETS.forEach(function(bk,i){
       var row = rows[i];
-      var need = (bk.amt === null) ? null : (bk.pct ? pay*bk.pct/100 : bk.amt);
+      var need = bk.rent ? Math.max(RENT - help, 0) : ((bk.amt === null) ? null : (bk.pct ? pay*bk.pct/100 : bk.amt));
       var got, ratio;
-      if(need === null){
+      if(need === null && !bk.rent){
         got = Math.max(pot,0); ratio = got > 0 ? 1 : 0;
         row.querySelector('.need').textContent = '';
       } else {
@@ -225,7 +267,7 @@ td:first-child{font-variant-numeric:tabular-nums;padding-left:0}
     if(shortfall > 0.5){
       verdict.className = 'verdict short';
       v.textContent = money(shortfall) + ' short';
-      p.textContent = 'Not enough to fill everything. Keep rent and food, let the repayments wait, and tell Appa.';
+      p.textContent = 'That gap is about ' + Math.ceil(shortfall/SAT) + ' more Saturday hours \u2014 or it is the number to ask Appa for. Either is fine. Keep rent and food, let the repayments wait, and tell him.';
     } else if(left < 40){
       verdict.className = 'verdict tight';
       v.textContent = 'Covered, ' + money(left) + ' left';
@@ -235,9 +277,77 @@ td:first-child{font-variant-numeric:tabular-nums;padding-left:0}
       v.textContent = money(left) + ' is yours';
       p.textContent = 'Everything covered. On a fortnight like this, put a big chunk straight at the loans while you can.';
     }
+
+    if(msgEl) msgEl.value = buildMessage(pay, help, shortfall, left);
   }
 
-  [a,b,c].forEach(function(el){ el.addEventListener('input', render); });
+  msgEl = document.getElementById('msg');
+  copiedEl = document.getElementById('copied');
+
+  function fixedNeed(){
+    var t = 0;
+    BUCKETS.forEach(function(bk){
+      if(bk.rent) t += RENT;
+      else if(typeof bk.amt === 'number') t += bk.amt;
+    });
+    return t;
+  }
+
+  function helpNeeded(pay){
+    var n = fixedNeed() - 0.9*pay;
+    return Math.max(0, Math.min(Math.ceil(n/5)*5, RENT));
+  }
+
+  function buildMessage(pay, help, shortfall, left){
+    var parts = [];
+    var hw = num(a), hs = num(b), hu = num(c);
+    var roster = [];
+    if(hw) roster.push(hw + ' weekday');
+    if(hs) roster.push(hs + ' Sat/evening');
+    if(hu) roster.push(hu + ' Sunday');
+    parts.push('Hi Appa \u2014 here is my next fortnight.');
+    parts.push('');
+    parts.push('Shifts: ' + (roster.length ? roster.join(', ') : 'nothing rostered yet'));
+    parts.push('That comes to about ' + money(pay) + ' before tax.');
+    parts.push('');
+    if(shortfall > 0.5){
+      var needed = helpNeeded(pay);
+      parts.push('Rent help set at ' + money(help) + ', and I am still ' + money(shortfall) + ' short.');
+      parts.push('To cover everything I would need ' + money(needed) + ' towards rent.');
+      parts.push('Otherwise I can pick up about ' + Math.ceil(shortfall/SAT) + ' more Saturday hours instead \u2014 tell me which you would rather.');
+    } else if(help > 0){
+      parts.push('Rent help I need: ' + money(help) + '.');
+      parts.push('Everything else is covered \u2014 rent, food, tithe, Myki, subs, your $55, Amma\u2019s $80 and the emergency fund.');
+      if(left > 40) parts.push('I have ' + money(left) + ' spare, so I will put some of it at the loans.');
+    } else {
+      parts.push('No rent help needed this fortnight \u2014 I have got it covered on my own.');
+      if(left > 40) parts.push('There is ' + money(left) + ' spare, so I will put a chunk straight at the loans.');
+    }
+    return parts.join('\n');
+  }
+
+  document.getElementById('solve').addEventListener('click', function(){
+    var pay = num(a)*WD + num(b)*SAT + num(c)*SUN;
+    helpI.value = helpNeeded(pay);
+    copiedEl.textContent = '';
+    render();
+  });
+
+  document.getElementById('copy').addEventListener('click', function(){
+    msgEl.select();
+    msgEl.setSelectionRange(0, 99999);
+    var done = function(ok){ copiedEl.textContent = ok ? 'Copied \u2014 paste it to Appa.' : 'Select the text above and copy it.'; };
+    try{
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(msgEl.value).then(function(){done(true);}, function(){done(false);});
+      } else { done(document.execCommand && document.execCommand('copy')); }
+    }catch(e){ done(false); }
+  });
+
+  [a,b,c,helpI].forEach(function(el){ el.addEventListener('input', function(){ copiedEl.textContent=''; render(); }); });
+  Array.prototype.forEach.call(document.querySelectorAll('.helpquick button'), function(btn){
+    btn.addEventListener('click', function(){ helpI.value = btn.getAttribute('data-h'); render(); });
+  });
   Array.prototype.forEach.call(document.querySelectorAll('.quick button'), function(btn){
     btn.addEventListener('click', function(){
       a.value = btn.getAttribute('data-a');
