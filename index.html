@@ -37,12 +37,13 @@ body{margin:0;background:var(--paper);color:var(--ink);
 h1{font-size:clamp(2rem,8vw,2.8rem);font-weight:800;line-height:1.03;letter-spacing:-.025em;margin:0 0 .6rem}
 .sub{color:var(--ink-soft);margin:0 0 2rem;max-width:31rem}
 .ask{background:var(--field);border:1px solid var(--line);border-radius:14px;padding:1.15rem 1.25rem 1.3rem;margin-bottom:1.6rem}
-.hours{display:flex;gap:1.5rem;flex-wrap:wrap}
-.hbox{flex:1 1 8rem}
-label{display:block;font-size:.9rem;color:var(--ink-soft);margin-bottom:.4rem}
-input{font:inherit;font-size:1.6rem;font-weight:700;letter-spacing:-.02em;color:var(--ink);
+.hours{display:flex;gap:1.1rem;flex-wrap:wrap}
+.hbox{flex:1 1 6.5rem}
+label{display:block;font-size:.82rem;color:var(--ink-soft);margin-bottom:.4rem;line-height:1.3}
+label b{display:block;font-weight:700;color:var(--ink);font-size:.95rem}
+input{font:inherit;font-size:1.5rem;font-weight:700;letter-spacing:-.02em;color:var(--ink);
   background:transparent;border:0;border-bottom:2px solid var(--line);padding:0 0 .15rem;
-  width:100%;max-width:6ch;border-radius:0}
+  width:100%;max-width:5.5ch;border-radius:0}
 input:focus{outline:none;border-bottom-color:var(--full)}
 input:focus-visible{outline:2px solid var(--full);outline-offset:4px}
 .gross{margin-top:1.1rem;padding-top:.9rem;border-top:1px solid var(--line);
@@ -72,11 +73,12 @@ input:focus-visible{outline:2px solid var(--full);outline-offset:4px}
 .dim .name,.dim .got{color:var(--ink-soft);opacity:.65}
 h2.sec{font-size:1.35rem;font-weight:800;letter-spacing:-.02em;margin:2.6rem 0 1rem;
   padding-top:1.6rem;border-top:1px solid var(--line)}
+.scroll{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:.95rem}
 th{text-align:left;font-weight:500;color:var(--ink-soft);font-size:.85rem;padding:0 .5rem .5rem 0;border-bottom:1px solid var(--line)}
 th:last-child,td:last-child{text-align:right;padding-right:0}
 td{padding:.6rem .5rem;border-bottom:1px solid var(--line);vertical-align:top}
-td:first-child{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;padding-left:0}
+td:first-child{font-variant-numeric:tabular-nums;padding-left:0}
 .rule{margin-bottom:1.15rem}
 .rule strong{display:block;font-weight:700;margin-bottom:.15rem}
 .rule p{margin:0;color:var(--ink-soft);font-size:.95rem}
@@ -93,57 +95,61 @@ td:first-child{font-weight:700;font-variant-numeric:tabular-nums;white-space:now
   <div class="ask">
     <div class="hours">
       <div class="hbox">
-        <label for="day">Day hours <span style="opacity:.7">$33.85</span></label>
-        <input id="day" type="number" inputmode="decimal" min="0" step="0.25" value="12.25">
+        <label for="wd"><b>Weekday</b>$33.85</label>
+        <input id="wd" type="number" inputmode="decimal" min="0" step="0.25" value="13.75">
       </div>
       <div class="hbox">
-        <label for="eve">Evening / on-call <span style="opacity:.7">$39.27</span></label>
-        <input id="eve" type="number" inputmode="decimal" min="0" step="0.25" value="2.75">
+        <label for="sat"><b>Sat / evening</b>$39.27</label>
+        <input id="sat" type="number" inputmode="decimal" min="0" step="0.25" value="15.5">
+      </div>
+      <div class="hbox">
+        <label for="sun"><b>Sunday</b>$47.39</label>
+        <input id="sun" type="number" inputmode="decimal" min="0" step="0.25" value="10">
       </div>
     </div>
     <div class="gross"><span>That fortnight you earn</span><b id="gross"></b></div>
   </div>
 
   <div class="quick">
-    <button type="button" data-d="12.25" data-e="2.75">Last payslip</button>
-    <button type="button" data-d="14" data-e="4">Covers the loans</button>
-    <button type="button" data-d="18" data-e="6">Comfortable</button>
-    <button type="button" data-d="22" data-e="7">Standing alone</button>
+    <button type="button" data-a="12.25" data-b="2.75" data-c="0">Quiet fortnight</button>
+    <button type="button" data-a="14" data-b="4" data-c="0">Covers the loans</button>
+    <button type="button" data-a="14" data-b="8" data-c="4">Standing alone</button>
+    <button type="button" data-a="13.75" data-b="15.5" data-c="10">Last payslip</button>
   </div>
 
   <div class="verdict" id="verdict"><strong></strong><p></p></div>
 
   <div id="buckets"></div>
 
-  <h2 class="sec">How many shifts you need</h2>
+  <h2 class="sec">Sunday is your best hour</h2>
+  <div class="scroll">
   <table>
-    <thead><tr><th>Hours a fortnight</th><th>What it reaches</th></tr></thead>
+    <thead><tr><th>Shift</th><th>Rate</th><th>vs weekday</th></tr></thead>
     <tbody>
-      <tr><td>13</td><td>Rent, food, Myki, subscriptions. Nothing after that.</td></tr>
-      <tr><td>17</td><td>Adds both loan repayments.</td></tr>
-      <tr><td>19</td><td>Adds the tithe.</td></tr>
-      <tr><td>25</td><td>Adds the emergency fund and about $100 of your own.</td></tr>
-      <tr><td>28</td><td>Covers the whole rent on your own, without Appa's $280.</td></tr>
+      <tr><td>Weekday</td><td>$33.85</td><td>&mdash;</td></tr>
+      <tr><td>Saturday, evening, weekday on-call</td><td>$39.27</td><td>+16%</td></tr>
+      <tr><td>Sunday and Sunday on-call</td><td>$47.39</td><td><strong>+40%</strong></td></tr>
     </tbody>
   </table>
-  <p class="note">Roughly half those numbers per week. Twenty-eight a fortnight is fourteen hours a week &mdash; that's the one worth aiming at.</p>
+  </div>
+  <p class="note">To cover everything on your own you need about $950 a fortnight. That's 28 weekday hours &mdash; or only 20 Sunday hours. Same money, eight fewer hours of your life. If you can get on the Sunday roster, get on it.</p>
 
   <h2 class="sec">Worth knowing</h2>
   <div class="rule">
-    <strong>Evening and on-call pay 16% more</strong>
-    <p>$39.27 against $33.85. Two evening hours are worth nearly two and a half day hours. If you get to choose, choose those. On-call especially &mdash; you're paid the higher rate for being available.</p>
+    <strong>Tax has started coming out &mdash; that's normal</strong>
+    <p>Tax is worked out as if every fortnight looked like that one. A big fortnight makes it look like you earn a lot all year, so more comes out. If your year total stays low, you get the extra back when you lodge your tax return. Lodge one every year, even if you think you earned nothing &mdash; that's how you get it back.</p>
   </div>
   <div class="rule">
-    <strong>You pay no tax under $18,200 a year</strong>
-    <p>That's about $700 a fortnight. Everything under it is yours in full, so don't ever turn down hours worrying about tax. Past that you only pay on the bit above.</p>
+    <strong>Super is yours too</strong>
+    <p>Twelve percent goes into super on top of your pay. You can't touch it for decades, but it's real money with your name on it, and it grows the whole time. Check the fund has your tax file number so it isn't taxed extra.</p>
   </div>
   <div class="rule">
-    <strong>Trips and long shifts are where the ground gets made up</strong>
-    <p>One work trip is what paid the rent down. Put your hand up for those whenever they come around &mdash; they do more in one go than months of careful budgeting.</p>
+    <strong>Claim the first aid allowance every shift</strong>
+    <p>It's small per hour but it's free money for a certificate you already hold. Make sure every shift is logged with it.</p>
   </div>
   <div class="rule">
-    <strong>Subscriptions are the easiest cut</strong>
-    <p>$30 a fortnight is $780 a year. At your hourly rate that's 23 hours of work. Worth checking what's actually in there.</p>
+    <strong>Big fortnights are for the loans, not for spending</strong>
+    <p>When one lands, put a chunk straight at the loans and the emergency fund before anything else. That's what the last one did, and it's why the rent is clear.</p>
   </div>
   <div class="rule">
     <strong>Rent, food, insurance</strong>
@@ -156,7 +162,7 @@ td:first-child{font-weight:700;font-variant-numeric:tabular-nums;white-space:now
 
 <script>
 (function(){
-  var DAY = 33.8520, EVE = 39.2683;
+  var WD = 33.8520, SAT = 39.2683, SUN = 47.3928;
   var BUCKETS = [
     {name:'Tithe', pct:10},
     {name:'Rent (your share)', amt:260, note:'After Appa\u2019s $280 a fortnight.'},
@@ -169,7 +175,7 @@ td:first-child{font-weight:700;font-variant-numeric:tabular-nums;white-space:now
     {name:'Yours to spend', amt:null, note:'Whatever reaches this far is yours, no guilt.'}
   ];
 
-  var dayI = document.getElementById('day'), eveI = document.getElementById('eve');
+  var a = document.getElementById('wd'), b = document.getElementById('sat'), c = document.getElementById('sun');
   var grossEl = document.getElementById('gross');
   var host = document.getElementById('buckets');
   var verdict = document.getElementById('verdict');
@@ -177,24 +183,24 @@ td:first-child{font-weight:700;font-variant-numeric:tabular-nums;white-space:now
   function money(n){ return '$' + Math.round(n).toLocaleString('en-AU'); }
   function num(el){ var v = parseFloat(el.value); return (isFinite(v) && v > 0) ? v : 0; }
 
-  host.innerHTML = BUCKETS.map(function(b,i){
+  host.innerHTML = BUCKETS.map(function(bk,i){
     return '<div class="row" data-i="'+i+'">'+
-      '<div class="row-top"><div class="name">'+b.name+'<span class="need"></span></div>'+
+      '<div class="row-top"><div class="name">'+bk.name+'<span class="need"></span></div>'+
       '<div class="got"></div></div>'+
       '<div class="track"><div class="fill"></div></div>'+
-      (b.note?'<p class="note">'+b.note+'</p>':'')+
+      (bk.note?'<p class="note">'+bk.note+'</p>':'')+
     '</div>';
   }).join('');
   var rows = Array.prototype.slice.call(host.querySelectorAll('.row'));
 
   function render(){
-    var pay = num(dayI)*DAY + num(eveI)*EVE;
+    var pay = num(a)*WD + num(b)*SAT + num(c)*SUN;
     grossEl.textContent = '$' + pay.toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2});
     var pot = pay, shortfall = 0;
 
-    BUCKETS.forEach(function(b,i){
+    BUCKETS.forEach(function(bk,i){
       var row = rows[i];
-      var need = (b.amt === null) ? null : (b.pct ? pay*b.pct/100 : b.amt);
+      var need = (bk.amt === null) ? null : (bk.pct ? pay*bk.pct/100 : bk.amt);
       var got, ratio;
       if(need === null){
         got = Math.max(pot,0); ratio = got > 0 ? 1 : 0;
@@ -222,19 +228,20 @@ td:first-child{font-weight:700;font-variant-numeric:tabular-nums;white-space:now
     } else if(left < 40){
       verdict.className = 'verdict tight';
       v.textContent = 'Covered, ' + money(left) + ' left';
-      p.textContent = 'It works, but there is nothing spare. One more shift changes this.';
+      p.textContent = 'It works, but there is nothing spare. One Sunday shift changes this.';
     } else {
       verdict.className = 'verdict';
       v.textContent = money(left) + ' is yours';
-      p.textContent = 'Everything covered. On a fortnight like this, put a chunk straight at the loans.';
+      p.textContent = 'Everything covered. On a fortnight like this, put a big chunk straight at the loans while you can.';
     }
   }
 
-  [dayI,eveI].forEach(function(el){ el.addEventListener('input', render); });
+  [a,b,c].forEach(function(el){ el.addEventListener('input', render); });
   Array.prototype.forEach.call(document.querySelectorAll('.quick button'), function(btn){
     btn.addEventListener('click', function(){
-      dayI.value = btn.getAttribute('data-d');
-      eveI.value = btn.getAttribute('data-e');
+      a.value = btn.getAttribute('data-a');
+      b.value = btn.getAttribute('data-b');
+      c.value = btn.getAttribute('data-c');
       render();
     });
   });
