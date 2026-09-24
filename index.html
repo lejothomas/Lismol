@@ -113,7 +113,7 @@ td:first-child{font-variant-numeric:tabular-nums;padding-left:0}
   <div class="quick">
     <button type="button" data-a="12.25" data-b="2.75" data-c="0">Quiet fortnight</button>
     <button type="button" data-a="14" data-b="4" data-c="0">Covers the loans</button>
-    <button type="button" data-a="14" data-b="8" data-c="4">Standing alone</button>
+    <button type="button" data-a="14" data-b="12" data-c="0">Standing alone</button>
     <button type="button" data-a="13.75" data-b="15.5" data-c="10">Last payslip</button>
   </div>
 
@@ -121,18 +121,19 @@ td:first-child{font-variant-numeric:tabular-nums;padding-left:0}
 
   <div id="buckets"></div>
 
-  <h2 class="sec">Sunday is your best hour</h2>
+  <h2 class="sec">What each shift pays</h2>
   <div class="scroll">
   <table>
     <thead><tr><th>Shift</th><th>Rate</th><th>vs weekday</th></tr></thead>
     <tbody>
       <tr><td>Weekday</td><td>$33.85</td><td>&mdash;</td></tr>
-      <tr><td>Saturday, evening, weekday on-call</td><td>$39.27</td><td>+16%</td></tr>
-      <tr><td>Sunday and Sunday on-call</td><td>$47.39</td><td><strong>+40%</strong></td></tr>
+      <tr><td><strong>Saturday, evening, weekday on-call</strong></td><td>$39.27</td><td><strong>+16%</strong></td></tr>
+      <tr><td>Sunday</td><td>$47.39</td><td>+40%</td></tr>
     </tbody>
   </table>
   </div>
-  <p class="note">To cover everything on your own you need about $950 a fortnight. That's 28 weekday hours &mdash; or only 20 Sunday hours. Same money, eight fewer hours of your life. If you can get on the Sunday roster, get on it.</p>
+  <p class="note">Saturdays, evenings and on-call are the ones to chase &mdash; especially on-call, where you're paid the higher rate for being available rather than working straight through. To cover everything on your own you need about $950 a fortnight: 28 weekday hours, or 24 if they're Saturdays and evenings.</p>
+  <p class="note">Sunday pays the most on paper. It isn't where I want you &mdash; keep your Sundays for church. If a Sunday shift is genuinely the only one going, take it and we'll talk, but don't build your roster around it.</p>
 
   <h2 class="sec">Worth knowing</h2>
   <div class="rule">
@@ -228,7 +229,7 @@ td:first-child{font-variant-numeric:tabular-nums;padding-left:0}
     } else if(left < 40){
       verdict.className = 'verdict tight';
       v.textContent = 'Covered, ' + money(left) + ' left';
-      p.textContent = 'It works, but there is nothing spare. One Sunday shift changes this.';
+      p.textContent = 'It works, but there is nothing spare. One more Saturday or on-call shift changes this.';
     } else {
       verdict.className = 'verdict';
       v.textContent = money(left) + ' is yours';
