@@ -11,7 +11,7 @@
 :root{
   --paper:#EEF2EE; --ink:#13201A; --ink-soft:#4A5D53; --line:#D2DCD4; --field:#FFFFFF;
   --full:#2F6B55; --part:#D99A2B; --none:#B3421F; --empty:rgba(19,32,26,.18);
-  --track:rgba(19,32,26,.07);
+  --vault:#1C4A3B; --track:rgba(19,32,26,.07);
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
@@ -20,13 +20,13 @@
   :root:not([data-theme="light"]){
     --paper:#0F1713; --ink:#E6EDE7; --ink-soft:#9BB0A3; --line:#26362D; --field:#18241E;
     --full:#5FC3A0; --part:#EFB44A; --none:#E8815C; --empty:rgba(230,237,231,.22);
-    --track:rgba(230,237,231,.09);
+    --vault:#5FC3A0; --track:rgba(230,237,231,.09);
   }
 }
 :root[data-theme="dark"]{
   --paper:#0F1713; --ink:#E6EDE7; --ink-soft:#9BB0A3; --line:#26362D; --field:#18241E;
   --full:#5FC3A0; --part:#EFB44A; --none:#E8815C; --empty:rgba(230,237,231,.22);
-  --track:rgba(230,237,231,.09);
+  --vault:#5FC3A0; --track:rgba(230,237,231,.09);
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -36,7 +36,7 @@ body{margin:0;background:var(--paper);color:var(--ink);
 .wrap{max-width:37rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
 h1{font-size:clamp(2rem,8vw,2.8rem);font-weight:800;line-height:1.03;letter-spacing:-.025em;margin:0 0 .6rem}
 .sub{color:var(--ink-soft);margin:0 0 2rem;max-width:31rem}
-.ask{background:var(--field);border:1px solid var(--line);border-radius:14px;padding:1.15rem 1.25rem 1.3rem;margin-bottom:1.6rem}
+.ask{background:var(--field);border:1px solid var(--line);border-radius:14px;padding:1.15rem 1.25rem 1.3rem;margin-bottom:1.5rem}
 .hours{display:flex;gap:1.1rem;flex-wrap:wrap}
 .hbox{flex:1 1 6.5rem}
 label{display:block;font-size:.82rem;color:var(--ink-soft);margin-bottom:.4rem;line-height:1.3}
@@ -52,23 +52,21 @@ input:focus-visible{outline:2px solid var(--full);outline-offset:4px}
 .gross b{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .money{display:flex;align-items:baseline;gap:.15rem;margin-top:.2rem}
 .money span{font-size:1.5rem;font-weight:500;color:var(--ink-soft)}
-.helpquick{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:1rem}
-.helpquick button{font:inherit;font-size:.8rem;font-weight:500;color:var(--ink-soft);
-  background:transparent;border:1px solid var(--line);border-radius:20px;
-  padding:.3rem .75rem;cursor:pointer}
-.helpquick button:hover{color:var(--ink);border-color:var(--ink-soft)}
-.helpquick button:focus-visible{outline:2px solid var(--full);outline-offset:2px}
-.quick{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem}
-.quick button{font:inherit;font-size:.85rem;font-weight:500;color:var(--ink-soft);
-  background:transparent;border:1px solid var(--line);border-radius:20px;
-  padding:.35rem .85rem;cursor:pointer}
-.quick button:hover{color:var(--ink);border-color:var(--ink-soft)}
-.quick button:focus-visible{outline:2px solid var(--full);outline-offset:2px}
+.helpquick,.quick{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:1rem}
+.quick{margin:0 0 2rem}
+.helpquick button,.quick button{font:inherit;font-size:.8rem;font-weight:500;color:var(--ink-soft);
+  background:transparent;border:1px solid var(--line);border-radius:20px;padding:.3rem .75rem;cursor:pointer}
+.helpquick button:hover,.quick button:hover{color:var(--ink);border-color:var(--ink-soft)}
+.helpquick button:focus-visible,.quick button:focus-visible{outline:2px solid var(--full);outline-offset:2px}
 .verdict{border-left:3px solid var(--full);padding:.2rem 0 .2rem 1rem;margin-bottom:2.2rem}
 .verdict strong{display:block;font-size:1.15rem;font-weight:700;letter-spacing:-.015em;margin-bottom:.2rem}
 .verdict p{margin:0;color:var(--ink-soft);font-size:.95rem}
 .verdict.short{border-left-color:var(--none)}
 .verdict.tight{border-left-color:var(--part)}
+.acct{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+  margin:1.8rem 0 1rem;padding-bottom:.5rem;border-bottom:2px solid var(--line)}
+.acct h3{margin:0;font-size:1.05rem;font-weight:800;letter-spacing:-.01em}
+.acct span{font-size:.82rem;color:var(--ink-soft);text-align:right;line-height:1.3}
 .row{margin-bottom:1.05rem}
 .row-top{display:flex;justify-content:space-between;align-items:baseline;gap:.8rem;margin-bottom:.35rem}
 .name{font-weight:500}
@@ -87,18 +85,29 @@ th{text-align:left;font-weight:500;color:var(--ink-soft);font-size:.85rem;paddin
 th:last-child,td:last-child{text-align:right;padding-right:0}
 td{padding:.6rem .5rem;border-bottom:1px solid var(--line);vertical-align:top}
 td:first-child{font-variant-numeric:tabular-nums;padding-left:0}
-.rule{margin-bottom:1.15rem}
-.rule strong{display:block;font-weight:700;margin-bottom:.15rem}
-.rule p{margin:0;color:var(--ink-soft);font-size:.95rem}
-.act{font:inherit;font-size:.92rem;font-weight:600;color:var(--paper);
-  background:var(--ink);border:0;border-radius:24px;padding:.65rem 1.3rem;cursor:pointer;margin:0 .5rem .5rem 0}
+.jars{background:var(--field);border:1px solid var(--line);border-radius:14px;padding:1.2rem 1.25rem;margin-bottom:1.3rem}
+.jar{display:flex;align-items:center;gap:.9rem;padding:.65rem 0;border-bottom:1px solid var(--line)}
+.jar:last-child{border-bottom:0}
+.jar-name{flex:1 1 auto;font-weight:500}
+.jar-name small{display:block;font-weight:400;font-size:.8rem;color:var(--ink-soft);line-height:1.35}
+.jar input{font-size:1.1rem;max-width:4.5ch;text-align:right}
+.jar-pre{color:var(--ink-soft);font-size:1.1rem;font-weight:500}
+.jar-have{flex:0 0 5.5rem;text-align:right;font-weight:700;font-variant-numeric:tabular-nums;color:var(--vault)}
+.vault{border-left:3px solid var(--vault);padding:.2rem 0 .2rem 1rem;margin:1.3rem 0 0}
+.vault strong{display:block;font-size:1.3rem;font-weight:800;letter-spacing:-.02em}
+.vault p{margin:.15rem 0 0;color:var(--ink-soft);font-size:.9rem}
+.act{font:inherit;font-size:.92rem;font-weight:600;color:var(--paper);background:var(--ink);
+  border:0;border-radius:24px;padding:.65rem 1.3rem;cursor:pointer;margin:0 .5rem .5rem 0}
 .act.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
 .act:focus-visible{outline:2px solid var(--full);outline-offset:3px}
-#msg{display:block;width:100%;margin:1.1rem 0 .8rem;min-height:10.5rem;resize:vertical;
+#msg{display:block;width:100%;margin:1.1rem 0 .8rem;min-height:11rem;resize:vertical;
   font:inherit;font-size:.92rem;line-height:1.55;color:var(--ink);background:var(--field);
   border:1px solid var(--line);border-radius:12px;padding:1rem;max-width:100%}
 #msg:focus-visible{outline:2px solid var(--full);outline-offset:2px}
 #copied{font-size:.85rem;color:var(--full);font-weight:600;margin:.2rem 0 0;min-height:1.2em}
+.rule{margin-bottom:1.15rem}
+.rule strong{display:block;font-weight:700;margin-bottom:.15rem}
+.rule p{margin:0;color:var(--ink-soft);font-size:.95rem}
 .sign{margin-top:2.6rem;padding-top:1.5rem;border-top:1px solid var(--line);color:var(--ink-soft);font-size:.95rem}
 .sign em{font-style:normal;color:var(--ink);font-weight:500}
 </style>
@@ -111,18 +120,12 @@ td:first-child{font-variant-numeric:tabular-nums;padding-left:0}
 
   <div class="ask">
     <div class="hours">
-      <div class="hbox">
-        <label for="wd"><b>Weekday</b>$33.85</label>
-        <input id="wd" type="number" inputmode="decimal" min="0" step="0.25" value="13.75">
-      </div>
-      <div class="hbox">
-        <label for="sat"><b>Sat / evening</b>$39.27</label>
-        <input id="sat" type="number" inputmode="decimal" min="0" step="0.25" value="15.5">
-      </div>
-      <div class="hbox">
-        <label for="sun"><b>Sunday</b>$47.39</label>
-        <input id="sun" type="number" inputmode="decimal" min="0" step="0.25" value="10">
-      </div>
+      <div class="hbox"><label for="wd"><b>Weekday</b>$33.85</label>
+        <input id="wd" type="number" inputmode="decimal" min="0" step="0.25" value="13.75"></div>
+      <div class="hbox"><label for="sat"><b>Sat / evening</b>$39.27</label>
+        <input id="sat" type="number" inputmode="decimal" min="0" step="0.25" value="15.5"></div>
+      <div class="hbox"><label for="sun"><b>Sunday</b>$47.39</label>
+        <input id="sun" type="number" inputmode="decimal" min="0" step="0.25" value="10"></div>
     </div>
     <div class="gross"><span>That fortnight you earn</span><b id="gross"></b></div>
   </div>
@@ -139,14 +142,42 @@ td:first-child{font-variant-numeric:tabular-nums;padding-left:0}
 
   <div class="quick">
     <button type="button" data-a="12.25" data-b="2.75" data-c="0">Quiet fortnight</button>
-    <button type="button" data-a="14" data-b="4" data-c="0">Covers the loans</button>
     <button type="button" data-a="14" data-b="12" data-c="0">Standing alone</button>
-    <button type="button" data-a="13.75" data-b="15.5" data-c="10">Last payslip</button>
+    <button type="button" data-a="13.75" data-b="15.5" data-c="10">Big one</button>
   </div>
 
   <div class="verdict" id="verdict"><strong></strong><p></p></div>
 
   <div id="buckets"></div>
+
+  <h2 class="sec">Two accounts, one rule</h2>
+  <div class="rule">
+    <strong>Savings account &mdash; no debit card on it</strong>
+    <p>Tithe, emergency fund and the jars live here. None of this money is needed this fortnight, so it shouldn&rsquo;t be one tap away. If there&rsquo;s no card attached, you can&rsquo;t spend it by accident.</p>
+  </div>
+  <div class="rule">
+    <strong>Everyday account &mdash; card on this one</strong>
+    <p>Rent, food, Myki, subscriptions, repayments and your own spending money. One rule: if it&rsquo;s in this account, you can spend it. No tracking, no guilt, no asking.</p>
+  </div>
+
+  <h2 class="sec">The jars</h2>
+  <p class="note" style="font-size:.95rem;margin-bottom:1rem">These are the costs that don&rsquo;t arrive every fortnight &mdash; birthdays, a flight, car rego. They&rsquo;re the ones that feel like surprises, and they&rsquo;re the reason people splash when pay is good and panic when it isn&rsquo;t. Put a little aside each time and they stop being surprises. Change any number to suit.</p>
+
+  <div class="jars" id="jars"></div>
+
+  <div class="ask" style="margin-bottom:1.3rem">
+    <label for="forts"><b>Fortnights you&rsquo;ve been doing this</b>Counting from your first transfer.</label>
+    <div class="money"><input id="forts" type="number" inputmode="numeric" min="0" step="1" value="1"></div>
+  </div>
+
+  <div class="vault">
+    <strong id="vaultTotal"></strong>
+    <p>That&rsquo;s what should be sitting in the savings account by now. If the real balance is lower, something has been dipped into &mdash; which is worth knowing, not worth panicking about.</p>
+  </div>
+
+  <h2 class="sec">Before you buy a car</h2>
+  <p class="note" style="font-size:.95rem">Turn the car jar on <strong>before</strong> you buy, not after. Rego and TAC, comprehensive insurance for a driver under 25, a service, tyres &mdash; it adds up to somewhere around $3,000&ndash;4,000 a year before you put a drop of petrol in. That&rsquo;s roughly $120&ndash;150 a fortnight, every fortnight, forever.</p>
+  <p class="note" style="font-size:.95rem">Set the jar to that number and watch what happens to the bottom of the list. Then decide. Get an insurance quote first &mdash; for a young driver it&rsquo;s the biggest and most unpredictable piece, and it&rsquo;s worth knowing the real figure before you fall in love with a car.</p>
 
   <h2 class="sec">What each shift pays</h2>
   <div class="scroll">
@@ -159,33 +190,21 @@ td:first-child{font-variant-numeric:tabular-nums;padding-left:0}
     </tbody>
   </table>
   </div>
-  <p class="note">Saturdays, evenings and on-call are the ones to chase &mdash; especially on-call, where you're paid the higher rate for being available rather than working straight through. With Appa&rsquo;s usual $140 you need about $905 a fortnight to cover everything: 27 weekday hours, or 23 if they&rsquo;re Saturdays and evenings. With no help at all it&rsquo;s about $950.</p>
-  <p class="note">Sunday pays the most on paper. It isn't where I want you &mdash; keep your Sundays for church. If a Sunday shift is genuinely the only one going, take it and we'll talk, but don't build your roster around it.</p>
+  <p class="note">Saturdays, evenings and on-call are the ones to chase &mdash; especially on-call, where you&rsquo;re paid the higher rate for being available rather than working straight through.</p>
+  <p class="note">Sunday pays the most on paper. It isn&rsquo;t where I want you &mdash; keep your Sundays for church. If a Sunday shift is genuinely the only one going, take it and we&rsquo;ll talk, but don&rsquo;t build your roster around it.</p>
 
   <h2 class="sec">Worth knowing</h2>
   <div class="rule">
     <strong>The rent help moves both ways</strong>
-    <p>$140 a fortnight is the normal setting. When you&rsquo;re earning well, tell me and I&rsquo;ll drop it &mdash; that money is doing someone else good. When a fortnight goes wrong, tell me and I&rsquo;ll put more in. Slide it here first so you know the number before you ask. Asking isn&rsquo;t failing; it&rsquo;s the whole arrangement working.</p>
+    <p>$140 a fortnight is the normal setting. When you&rsquo;re earning well, tell me and I&rsquo;ll drop it. When a fortnight goes wrong, tell me and I&rsquo;ll put more in. Work out the number here first so you know what you&rsquo;re asking for. Asking isn&rsquo;t failing; it&rsquo;s the arrangement working.</p>
   </div>
   <div class="rule">
-    <strong>Tax has started coming out &mdash; that's normal</strong>
-    <p>Tax is worked out as if every fortnight looked like that one. A big fortnight makes it look like you earn a lot all year, so more comes out. If your year total stays low, you get the extra back when you lodge your tax return. Lodge one every year, even if you think you earned nothing &mdash; that's how you get it back.</p>
-  </div>
-  <div class="rule">
-    <strong>Super is yours too</strong>
-    <p>Twelve percent goes into super on top of your pay. You can't touch it for decades, but it's real money with your name on it, and it grows the whole time. Check the fund has your tax file number so it isn't taxed extra.</p>
-  </div>
-  <div class="rule">
-    <strong>Claim the first aid allowance every shift</strong>
-    <p>It's small per hour but it's free money for a certificate you already hold. Make sure every shift is logged with it.</p>
-  </div>
-  <div class="rule">
-    <strong>Big fortnights are for the loans, not for spending</strong>
-    <p>When one lands, put a chunk straight at the loans and the emergency fund before anything else. That's what the last one did, and it's why the rent is clear.</p>
+    <strong>Tax coming out is normal</strong>
+    <p>Tax is worked out as if every fortnight looked like that one, so a big fortnight pulls more out. If your year total stays low you get the extra back when you lodge. Lodge a return every single year, even if you think you earned nothing.</p>
   </div>
   <div class="rule">
     <strong>Rent, food, insurance</strong>
-    <p>The three where missing a payment has consequences you can't talk your way out of. If a fortnight is short, keep these, let the repayments wait, and tell me. That's information, not failure.</p>
+    <p>The three where missing a payment has consequences you can&rsquo;t talk your way out of. If a fortnight is short, keep these, let the repayments wait, and tell me. That&rsquo;s information, not failure.</p>
   </div>
 
   <h2 class="sec">Tell Appa</h2>
@@ -201,161 +220,193 @@ td:first-child{font-variant-numeric:tabular-nums;padding-left:0}
 
 <script>
 (function(){
-  var WD = 33.8520, SAT = 39.2683, SUN = 47.3928, RENT = 540;
-  var BUCKETS = [
-    {name:'Tithe', pct:10},
-    {name:'Rent (your share)', rent:true, note:'Your half of a $540 fortnight, less whatever Appa puts in.'},
+  var WD=33.8520, SAT=39.2683, SUN=47.3928, RENT=540;
+
+  var JARS=[
+    {id:'emg', name:'Emergency fund', hint:'Build to $1,000, then it becomes the holiday fund.', def:100},
+    {id:'gift',name:'Gifts and birthdays', hint:'Family, friends, Christmas.', def:15},
+    {id:'trip',name:'Travel', hint:'Flights, a weekend away, going overseas one day.', def:25},
+    {id:'car', name:'Car fund', hint:'Rego, insurance, service, tyres. Turn this on BEFORE you buy one.', def:0}
+  ];
+
+  function store(k,v){ try{ localStorage.setItem('lis_'+k, v); }catch(e){} }
+  function fetchv(k,d){ try{ var v=localStorage.getItem('lis_'+k); return v===null?d:v; }catch(e){ return d; } }
+
+  var jarHost=document.getElementById('jars');
+  jarHost.innerHTML=JARS.map(function(j){
+    return '<div class="jar">'+
+      '<div class="jar-name">'+j.name+'<small>'+j.hint+'</small></div>'+
+      '<span class="jar-pre">$</span>'+
+      '<input id="jar_'+j.id+'" type="number" inputmode="decimal" min="0" step="5" value="'+fetchv('jar_'+j.id, j.def)+'">'+
+      '<div class="jar-have" id="have_'+j.id+'"></div>'+
+    '</div>';
+  }).join('');
+
+  var BUCKETS=[
+    {name:'Tithe', pct:10, acct:'Savings account', note:'Off the top, before anything else.'},
+    {name:'Rent (your share)', rent:true, acct:'Everyday account', note:'Your half of a $540 fortnight, less whatever Appa puts in.'},
     {name:'Food', amt:120, note:'Plus the supermarket card when you have one.'},
     {name:'Myki', amt:30},
     {name:'Subscriptions', amt:30},
     {name:'Repayment to Appa', amt:55},
     {name:'Repayment to Amma', amt:80},
-    {name:'Emergency fund', amt:100, note:'Build to $1,000, then it becomes the holiday fund.'},
-    {name:'Yours to spend', amt:null, note:'Whatever reaches this far is yours, no guilt.'}
+    {name:'Emergency fund', jar:'emg', acct:'Savings account'},
+    {name:'Gifts and birthdays', jar:'gift'},
+    {name:'Travel', jar:'trip'},
+    {name:'Car fund', jar:'car'},
+    {name:'Yours to spend', amt:null, acct:'Everyday account', note:'If it reaches this far, it\u2019s yours. No guilt, no permission needed.'}
   ];
 
-  var a = document.getElementById('wd'), b = document.getElementById('sat'), c = document.getElementById('sun');
-  var grossEl = document.getElementById('gross');
-  var host = document.getElementById('buckets');
-  var verdict = document.getElementById('verdict');
+  var a=document.getElementById('wd'), b=document.getElementById('sat'), c=document.getElementById('sun');
+  var helpI=document.getElementById('help'), fortsI=document.getElementById('forts');
+  var grossEl=document.getElementById('gross'), host=document.getElementById('buckets');
+  var verdict=document.getElementById('verdict'), vaultEl=document.getElementById('vaultTotal');
+  var msgEl=null, copiedEl=null;
 
-  var msgEl = null, copiedEl = null;
-  function money(n){ return '$' + Math.round(n).toLocaleString('en-AU'); }
-  function num(el){ var v = parseFloat(el.value); return (isFinite(v) && v > 0) ? v : 0; }
+  fortsI.value=fetchv('forts',1);
 
-  host.innerHTML = BUCKETS.map(function(bk,i){
-    return '<div class="row" data-i="'+i+'">'+
-      '<div class="row-top"><div class="name">'+bk.name+'<span class="need"></span></div>'+
-      '<div class="got"></div></div>'+
+  function money(n){ return '$'+Math.round(n).toLocaleString('en-AU'); }
+  function num(el){ var v=parseFloat(el.value); return (isFinite(v)&&v>0)?v:0; }
+  function jarVal(id){ return num(document.getElementById('jar_'+id)); }
+
+  var html='';
+  BUCKETS.forEach(function(bk,i){
+    if(bk.acct) html+='<div class="acct"><h3>'+bk.acct+'</h3><span>'+
+      (bk.acct.indexOf('Savings')===0?'No card<br>Out of reach':'Card on this one<br>Spendable')+'</span></div>';
+    html+='<div class="row" data-i="'+i+'">'+
+      '<div class="row-top"><div class="name">'+bk.name+'<span class="need"></span></div><div class="got"></div></div>'+
       '<div class="track"><div class="fill"></div></div>'+
-      (bk.note?'<p class="note">'+bk.note+'</p>':'')+
-    '</div>';
-  }).join('');
-  var rows = Array.prototype.slice.call(host.querySelectorAll('.row'));
+      (bk.note?'<p class="note">'+bk.note+'</p>':'')+'</div>';
+  });
+  host.innerHTML=html;
+  var rows=Array.prototype.slice.call(host.querySelectorAll('.row'));
 
-  var helpI = document.getElementById('help');
-
-  function render(){
-    var pay = num(a)*WD + num(b)*SAT + num(c)*SUN;
-    var help = Math.min(num(helpI), RENT);
-    grossEl.textContent = '$' + pay.toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2});
-    var pot = pay, shortfall = 0;
-
-    BUCKETS.forEach(function(bk,i){
-      var row = rows[i];
-      var need = bk.rent ? Math.max(RENT - help, 0) : ((bk.amt === null) ? null : (bk.pct ? pay*bk.pct/100 : bk.amt));
-      var got, ratio;
-      if(need === null && !bk.rent){
-        got = Math.max(pot,0); ratio = got > 0 ? 1 : 0;
-        row.querySelector('.need').textContent = '';
-      } else {
-        got = Math.max(Math.min(pot, need), 0);
-        ratio = need > 0 ? got/need : 1;
-        if(got < need - 0.5) shortfall += (need - got);
-        row.querySelector('.need').textContent = 'needs ' + money(need);
-      }
-      pot -= got;
-      row.querySelector('.got').textContent = money(got);
-      var fill = row.querySelector('.fill');
-      fill.style.width = (ratio*100) + '%';
-      fill.style.background = ratio >= .999 ? 'var(--full)' : (ratio > 0 ? 'var(--part)' : 'var(--empty)');
-      row.className = 'row' + (ratio === 0 ? ' dim' : '');
-    });
-
-    var left = Math.max(pot,0);
-    var v = verdict.querySelector('strong'), p = verdict.querySelector('p');
-    if(shortfall > 0.5){
-      verdict.className = 'verdict short';
-      v.textContent = money(shortfall) + ' short';
-      p.textContent = 'That gap is about ' + Math.ceil(shortfall/SAT) + ' more Saturday hours \u2014 or it is the number to ask Appa for. Either is fine. Keep rent and food, let the repayments wait, and tell him.';
-    } else if(left < 40){
-      verdict.className = 'verdict tight';
-      v.textContent = 'Covered, ' + money(left) + ' left';
-      p.textContent = 'It works, but there is nothing spare. One more Saturday or on-call shift changes this.';
+  function buildMessage(pay,help,shortfall,left){
+    var p=[], r=[];
+    if(num(a)) r.push(num(a)+' weekday');
+    if(num(b)) r.push(num(b)+' Sat/evening');
+    if(num(c)) r.push(num(c)+' Sunday');
+    p.push('Hi Appa \u2014 here is my next fortnight.');
+    p.push('');
+    p.push('Shifts: '+(r.length?r.join(', '):'nothing rostered yet'));
+    p.push('That comes to about '+money(pay)+' before tax.');
+    p.push('');
+    if(shortfall>0.5){
+      p.push('Rent help set at '+money(help)+', and I am still '+money(shortfall)+' short.');
+      p.push('To cover everything I would need '+money(helpNeeded(pay))+' towards rent.');
+      p.push('Or I can pick up about '+Math.ceil(shortfall/SAT)+' more Saturday hours instead \u2014 tell me which you would rather.');
+    } else if(help>0){
+      p.push('Rent help I need: '+money(help)+'.');
+      p.push('Everything else is covered, jars included.');
+      if(left>40) p.push('I have '+money(left)+' spare, so I will put some of it at the loans.');
     } else {
-      verdict.className = 'verdict';
-      v.textContent = money(left) + ' is yours';
-      p.textContent = 'Everything covered. On a fortnight like this, put a big chunk straight at the loans while you can.';
+      p.push('No rent help needed this fortnight \u2014 I have got it covered on my own.');
+      if(left>40) p.push('There is '+money(left)+' spare, so I will put a chunk straight at the loans.');
     }
-
-    if(msgEl) msgEl.value = buildMessage(pay, help, shortfall, left);
+    return p.join('\n');
   }
 
-  msgEl = document.getElementById('msg');
-  copiedEl = document.getElementById('copied');
-
   function fixedNeed(){
-    var t = 0;
+    var t=0;
     BUCKETS.forEach(function(bk){
-      if(bk.rent) t += RENT;
-      else if(typeof bk.amt === 'number') t += bk.amt;
+      if(bk.rent) t+=RENT;
+      else if(bk.jar) t+=jarVal(bk.jar);
+      else if(typeof bk.amt==='number') t+=bk.amt;
     });
     return t;
   }
-
   function helpNeeded(pay){
-    var n = fixedNeed() - 0.9*pay;
-    return Math.max(0, Math.min(Math.ceil(n/5)*5, RENT));
+    return Math.max(0, Math.min(Math.ceil((fixedNeed()-0.9*pay)/5)*5, RENT));
   }
 
-  function buildMessage(pay, help, shortfall, left){
-    var parts = [];
-    var hw = num(a), hs = num(b), hu = num(c);
-    var roster = [];
-    if(hw) roster.push(hw + ' weekday');
-    if(hs) roster.push(hs + ' Sat/evening');
-    if(hu) roster.push(hu + ' Sunday');
-    parts.push('Hi Appa \u2014 here is my next fortnight.');
-    parts.push('');
-    parts.push('Shifts: ' + (roster.length ? roster.join(', ') : 'nothing rostered yet'));
-    parts.push('That comes to about ' + money(pay) + ' before tax.');
-    parts.push('');
-    if(shortfall > 0.5){
-      var needed = helpNeeded(pay);
-      parts.push('Rent help set at ' + money(help) + ', and I am still ' + money(shortfall) + ' short.');
-      parts.push('To cover everything I would need ' + money(needed) + ' towards rent.');
-      parts.push('Otherwise I can pick up about ' + Math.ceil(shortfall/SAT) + ' more Saturday hours instead \u2014 tell me which you would rather.');
-    } else if(help > 0){
-      parts.push('Rent help I need: ' + money(help) + '.');
-      parts.push('Everything else is covered \u2014 rent, food, tithe, Myki, subs, your $55, Amma\u2019s $80 and the emergency fund.');
-      if(left > 40) parts.push('I have ' + money(left) + ' spare, so I will put some of it at the loans.');
+  function render(){
+    var pay=num(a)*WD+num(b)*SAT+num(c)*SUN;
+    var help=Math.min(num(helpI),RENT);
+    grossEl.textContent='$'+pay.toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2});
+    var pot=pay, shortfall=0;
+
+    BUCKETS.forEach(function(bk,i){
+      var row=rows[i], need;
+      if(bk.rent) need=Math.max(RENT-help,0);
+      else if(bk.jar) need=jarVal(bk.jar);
+      else if(bk.pct) need=pay*bk.pct/100;
+      else need=(bk.amt===null)?null:bk.amt;
+
+      var got, ratio;
+      if(need===null){ got=Math.max(pot,0); ratio=got>0?1:0; row.querySelector('.need').textContent=''; }
+      else {
+        got=Math.max(Math.min(pot,need),0);
+        ratio=need>0?got/need:1;
+        if(got<need-0.5) shortfall+=(need-got);
+        row.querySelector('.need').textContent=need>0?('needs '+money(need)):'off';
+      }
+      pot-=got;
+      row.querySelector('.got').textContent=money(got);
+      var f=row.querySelector('.fill');
+      f.style.width=(ratio*100)+'%';
+      f.style.background = ratio>=.999?'var(--full)':(ratio>0?'var(--part)':'var(--empty)');
+      row.className='row'+(ratio===0?' dim':'');
+    });
+
+    var left=Math.max(pot,0);
+    var v=verdict.querySelector('strong'), p=verdict.querySelector('p');
+    if(shortfall>0.5){
+      verdict.className='verdict short';
+      v.textContent=money(shortfall)+' short';
+      p.textContent='That gap is about '+Math.ceil(shortfall/SAT)+' more Saturday hours \u2014 or it is the number to ask Appa for. Keep rent and food, let the repayments wait, and tell him.';
+    } else if(left<40){
+      verdict.className='verdict tight';
+      v.textContent='Covered, '+money(left)+' left';
+      p.textContent='Everything filled, jars included. Nothing spare \u2014 one more Saturday shift changes that.';
     } else {
-      parts.push('No rent help needed this fortnight \u2014 I have got it covered on my own.');
-      if(left > 40) parts.push('There is ' + money(left) + ' spare, so I will put a chunk straight at the loans.');
+      verdict.className='verdict';
+      v.textContent=money(left)+' is yours';
+      p.textContent='Everything covered and every jar filled. On a fortnight like this, put a chunk straight at the loans.';
     }
-    return parts.join('\n');
+
+    var n=Math.max(parseInt(fortsI.value,10)||0,0), vault=0;
+    JARS.forEach(function(j){
+      var tot=jarVal(j.id)*n;
+      vault+=tot;
+      document.getElementById('have_'+j.id).textContent=money(tot);
+    });
+    vaultEl.textContent=money(vault)+' should be saved';
+
+    if(msgEl) msgEl.value=buildMessage(pay,help,shortfall,left);
   }
 
-  document.getElementById('solve').addEventListener('click', function(){
-    var pay = num(a)*WD + num(b)*SAT + num(c)*SUN;
-    helpI.value = helpNeeded(pay);
-    copiedEl.textContent = '';
-    render();
-  });
+  msgEl=document.getElementById('msg');
+  copiedEl=document.getElementById('copied');
 
-  document.getElementById('copy').addEventListener('click', function(){
-    msgEl.select();
-    msgEl.setSelectionRange(0, 99999);
-    var done = function(ok){ copiedEl.textContent = ok ? 'Copied \u2014 paste it to Appa.' : 'Select the text above and copy it.'; };
+  document.getElementById('solve').addEventListener('click',function(){
+    helpI.value=helpNeeded(num(a)*WD+num(b)*SAT+num(c)*SUN);
+    copiedEl.textContent=''; render();
+  });
+  document.getElementById('copy').addEventListener('click',function(){
+    msgEl.select(); msgEl.setSelectionRange(0,99999);
+    var done=function(ok){ copiedEl.textContent=ok?'Copied \u2014 paste it to Appa.':'Select the text above and copy it.'; };
     try{
-      if(navigator.clipboard && navigator.clipboard.writeText){
-        navigator.clipboard.writeText(msgEl.value).then(function(){done(true);}, function(){done(false);});
-      } else { done(document.execCommand && document.execCommand('copy')); }
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(msgEl.value).then(function(){done(true);},function(){done(false);});
+      } else { done(document.execCommand&&document.execCommand('copy')); }
     }catch(e){ done(false); }
   });
 
-  [a,b,c,helpI].forEach(function(el){ el.addEventListener('input', function(){ copiedEl.textContent=''; render(); }); });
-  Array.prototype.forEach.call(document.querySelectorAll('.helpquick button'), function(btn){
-    btn.addEventListener('click', function(){ helpI.value = btn.getAttribute('data-h'); render(); });
+  [a,b,c,helpI].forEach(function(el){ el.addEventListener('input',function(){ copiedEl.textContent=''; render(); }); });
+  fortsI.addEventListener('input',function(){ store('forts',fortsI.value); render(); });
+  JARS.forEach(function(j){
+    var el=document.getElementById('jar_'+j.id);
+    el.addEventListener('input',function(){ store('jar_'+j.id, el.value); render(); });
   });
-  Array.prototype.forEach.call(document.querySelectorAll('.quick button'), function(btn){
-    btn.addEventListener('click', function(){
-      a.value = btn.getAttribute('data-a');
-      b.value = btn.getAttribute('data-b');
-      c.value = btn.getAttribute('data-c');
-      render();
+  Array.prototype.forEach.call(document.querySelectorAll('.quick button'),function(btn){
+    btn.addEventListener('click',function(){
+      a.value=btn.getAttribute('data-a'); b.value=btn.getAttribute('data-b'); c.value=btn.getAttribute('data-c'); render();
     });
   });
+  Array.prototype.forEach.call(document.querySelectorAll('.helpquick button'),function(btn){
+    btn.addEventListener('click',function(){ helpI.value=btn.getAttribute('data-h'); render(); });
+  });
+
   render();
 })();
 </script>
